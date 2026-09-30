@@ -1,0 +1,13 @@
+<odoo>
+    <menuitem id="menu_real_estate_root" name="Inmobiliaria"/>
+
+    <menuitem id="menu_real_estate_ads"
+              name="Anuncios"
+              parent="menu_real_estate_root"/>
+
+    <menuitem id="menu_estate_property_action"
+              name="Propiedades"
+              parent="menu_real_estate_ads"
+              action="estate_property_action"/>
+
+</odoo>
