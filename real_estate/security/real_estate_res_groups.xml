@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!--punto 16-->
+    <record id="module_category_real_estate" model="ir.module.category">
+        <field name="name">Inmobiliaria</field>
+    </record>
+
+    <record id="privilege_real_estate" model="res.groups.privilege">
+        <field name="name">Inmobiliaria</field>
+        <field name="category_id" ref="module_category_real_estate"/>
+    </record>
+    <!--punto 12-->
+    <record id="group_real_estate_manager" model="res.groups">
+        <field name="name">Manager de Propiedades</field>
+        <field name="privilege_id" ref="privilege_real_estate"/>
+    </record>
+    <!--punto 13-->
+    <record id="group_real_estate_salesman" model="res.groups">
+        <field name="name">Vendedor de Propiedades</field>
+        <field name="privilege_id" ref="privilege_real_estate"/>
+    </record>
+</odoo>
