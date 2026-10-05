@@ -88,6 +88,10 @@
                 <!-- b. Filtro: creados por el usuario con sesión activa -->
                 <filter string="Mis propiedades" name="my_properties"
                         domain="[('create_uid', '=', uid)]"/>
+                <separator/>
+                <!-- punto 24.a: Filtro: propiedades disponibles (Nuevo u Oferta recibida) -->
+                <filter string="Disponibles" name="available"
+                        domain="[('state', 'in', ['new', 'offer_received'])]"/>
 
                 <separator/>
                 <!-- c. Agrupar por usuario que lo creó -->
@@ -99,6 +103,9 @@
                 <!-- e. Agrupar por código postal -->
                 <filter string="Código postal" name="group_postcode"
                         context="{'group_by': 'postcode'}"/>
+                <!-- punto 24.b: Agrupar por estado -->
+                <filter string="Estado" name="group_state"
+                        context="{'group_by': 'state'}"/>
             </search>
         </field>
     </record>
