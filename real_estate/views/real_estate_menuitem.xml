@@ -10,4 +10,15 @@
               parent="menu_real_estate_ads"
               action="estate_property_action"/>
 
+    <!--punto 28.a-->
+    <menuitem id="menu_real_estate_settings"
+              name="Ajustes"
+              parent="menu_real_estate_root"/>
+
+    <!--punto 28.b-->
+    <menuitem id="menu_estate_property_type_action"
+              name="Tipos de propiedad"
+              parent="menu_real_estate_settings"
+              action="estate_property_type_action"/>
+
 </odoo>
