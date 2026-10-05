@@ -32,3 +32,30 @@ class EstateProperty(models.Model):
         string="Orientación del jardín",
     )
     garden_area = fields.Integer(string="Superficie jardín")
+    state = fields.Selection(
+        [
+            ("new", "Nuevo"),
+            ("offer_received", "Oferta recibida"),
+            ("offer_accepted", "Oferta aceptada"),
+            ("sold", "Vendido"),
+            ("cancelled", "Cancelado"),
+        ],
+        string="Estado",
+        required=True,
+        default="new",
+        copy=False,
+    )
+    property_type_id = fields.Many2one(
+        "estate.property.type",
+        string="Tipo Propiedad",
+    )
+    buyer_id = fields.Many2one(
+        "res.partner",
+        string="Comprador",
+    )
+    salesman_id = fields.Many2one(
+        "res.users",
+        string="Vendedor",
+        copy=False,
+        default=lambda self: self.env.user,
+    )
