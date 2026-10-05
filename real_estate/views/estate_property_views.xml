@@ -40,6 +40,8 @@
                     </div>
                     <group>
                         <group>
+                            <!--punto 30-->
+                            <field name="property_type_id"/>
                             <field name="postcode"/>
                             <field name="date_availability"/>
                         </group>
@@ -63,6 +65,13 @@
                                     <field name="garden_area"/>
                                     <field name="garden_orientation"/>
                                 </group>
+                            </group>
+                        </page>
+                        <!--punto 30-->
+                        <page string="Más info.">
+                            <group>
+                                <field name="buyer_id"/>
+                                <field name="salesman_id"/>
                             </group>
                         </page>
                     </notebook>
