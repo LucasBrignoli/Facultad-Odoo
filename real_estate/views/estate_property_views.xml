@@ -13,6 +13,8 @@
         <field name="arch" type="xml">
             <list>
                 <field name="name"/>
+                <!--punto 36-->
+                <field name="tag_ids" widget="many2many_tags"/>
                 <field name="postcode"/>
                 <field name="bedrooms"/>
                 <field name="living_area"/>
@@ -37,6 +39,8 @@
                         <h1>
                             <field name="name" placeholder="Nombre propiedad"/>
                         </h1>
+                        <!--punto 36-->
+                        <field name="tag_ids" widget="many2many_tags"/>
                     </div>
                     <group>
                         <group>
