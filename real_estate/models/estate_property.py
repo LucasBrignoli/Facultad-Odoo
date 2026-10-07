@@ -59,3 +59,12 @@ class EstateProperty(models.Model):
         copy=False,
         default=lambda self: self.env.user,
     )
+    tag_ids = fields.Many2many(
+        "estate.property.tag",
+        string="Etiquetas",
+    )
+    offer_ids = fields.One2many(
+        comodel_name="estate.property.offer",
+        inverse_name="property_id",
+        string="Ofertas",
+    )
