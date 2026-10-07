@@ -1,5 +1,5 @@
 from dateutil.relativedelta import relativedelta
-from odoo import models, fields
+from odoo import api, models, fields
 
 
 class EstateProperty(models.Model):
@@ -32,6 +32,12 @@ class EstateProperty(models.Model):
         string="Orientación del jardín",
     )
     garden_area = fields.Integer(string="Superficie jardín")
+    # unidad 2 - puntos 1, 4 y 5
+    total_area = fields.Integer(
+        string="Superficie total",
+        compute="_compute_total_area",
+        store=True,
+    )
     state = fields.Selection(
         [
             ("new", "Nuevo"),
@@ -68,3 +74,41 @@ class EstateProperty(models.Model):
         inverse_name="property_id",
         string="Ofertas",
     )
+    # unidad 2 - punto 7
+    best_offer = fields.Float(
+        string="Mejor oferta",
+        compute="_compute_best_offer",
+    )
+
+    # unidad 2 - punto 5
+    @api.depends("living_area", "garden_area")
+    def _compute_total_area(self):
+        for record in self:
+            record.total_area = record.living_area + record.garden_area
+
+    # unidad 2 - punto 7
+    @api.depends("offer_ids.price")
+    def _compute_best_offer(self):
+        for record in self:
+            record.best_offer = max(record.offer_ids.mapped("price"), default=0.0)
+
+    # unidad 2 - punto 13
+    @api.onchange("garden")
+    def _onchange_garden(self):
+        if self.garden:
+            self.garden_area = 10
+        else:
+            self.garden_area = 0
+
+    # unidad 2 - punto 14
+    @api.onchange("expected_price")
+    def _onchange_expected_price(self):
+        # se ignora el 0 para que no salte la advertencia al abrir una propiedad nueva
+        if self.expected_price and self.expected_price < 10000:
+            return {
+                "warning": {
+                    "title": "Precio bajo",
+                    "message": "El precio esperado ingresado es menor a 10.000. "
+                               "Verificá que no se trate de un error de tipeo.",
+                }
+            }

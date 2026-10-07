@@ -52,6 +52,8 @@
                         <group>
                             <field name="expected_price"/>
                             <field name="selling_price"/>
+                            <!--unidad 2 - punto 7-->
+                            <field name="best_offer"/>
                         </group>
                     </group>
                     <notebook>
@@ -68,6 +70,8 @@
                                     <field name="garden"/>
                                     <field name="garden_area"/>
                                     <field name="garden_orientation"/>
+                                    <!--unidad 2 - punto 2-->
+                                    <field name="total_area"/>
                                 </group>
                             </group>
                         </page>
