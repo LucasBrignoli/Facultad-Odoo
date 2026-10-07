@@ -78,6 +78,10 @@
                                 <field name="salesman_id"/>
                             </group>
                         </page>
+                        <!--punto 41-->
+                        <page string="Ofertas">
+                            <field name="offer_ids"/>
+                        </page>
                     </notebook>
                 </sheet>
             </form>
