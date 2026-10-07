@@ -10,6 +10,12 @@
               parent="menu_real_estate_ads"
               action="estate_property_action"/>
 
+    <!--unidad 2 - punto 12-->
+    <menuitem id="menu_estate_property_offer_action"
+              name="Ofertas"
+              parent="menu_real_estate_ads"
+              action="estate_property_offer_action"/>
+
     <!--punto 28.a-->
     <menuitem id="menu_real_estate_settings"
               name="Ajustes"
