@@ -31,10 +31,21 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form>
-                <header>
-                    <field name="state" widget="statusbar"/>
-                </header>
+            <!--punto 15-->
+                   <header>
+                        <button name="action_sold" type="object" string="Marcar como vendida"
+                                invisible="state in ('sold', 'cancelled')"/>
+                        <button name="action_cancel" type="object" string="Cancelar"
+                                invisible="state in ('sold', 'cancelled')"/>
+                        <button name="action_generate_offer" type="object" string="Generar oferta automática"/>
+                        <button name="action_clear_tags" type="object" string="Sacar etiquetas"/>
+                        <button name="action_load_all_tags" type="object" string="Cargar todas las etiquetas"/>
+                        <button name="action_new_building_tag" type="object" string="A estrenar"/>
+                        <field name="state" widget="statusbar"/>
+                    </header>
                 <sheet>
+                    <widget name="web_ribbon" title="Vendida" bg_color="text-bg-success"
+                        invisible="state != 'sold'"/>
                     <div class="oe_title">
                         <h1>
                             <field name="name" placeholder="Nombre propiedad"/>

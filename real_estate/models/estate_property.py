@@ -1,6 +1,7 @@
+import random
 from dateutil.relativedelta import relativedelta
-from odoo import api, models, fields
-
+from odoo import api, Command, models, fields
+from odoo.exceptions import UserError
 
 class EstateProperty(models.Model):
     _name = 'estate.property'
@@ -79,6 +80,12 @@ class EstateProperty(models.Model):
         string="Mejor oferta",
         compute="_compute_best_offer",
     )
+    # unidad 2 - punto 19
+    offer_partner_ids = fields.Many2many(
+        "res.partner",
+        string="Ofertantes",
+        compute="_compute_offer_partner_ids",
+    )
 
     # unidad 2 - punto 5
     @api.depends("living_area", "garden_area")
@@ -91,6 +98,12 @@ class EstateProperty(models.Model):
     def _compute_best_offer(self):
         for record in self:
             record.best_offer = max(record.offer_ids.mapped("price"), default=0.0)
+
+    # unidad 2 - punto 19
+    @api.depends("offer_ids.partner_id")
+    def _compute_offer_partner_ids(self):
+        for record in self:
+            record.offer_partner_ids = record.offer_ids.mapped("partner_id")
 
     # unidad 2 - punto 13
     @api.onchange("garden")
@@ -112,3 +125,61 @@ class EstateProperty(models.Model):
                                "Verificá que no se trate de un error de tipeo.",
                 }
             }
+
+        # unidad 2 - punto 22
+    @api.ondelete(at_uninstall=False)
+    def _unlink_if_new_or_cancelled(self):
+        for record in self:
+            if record.state not in ('new', 'cancelled'):
+                raise UserError("Solo se pueden borrar propiedades nuevas o canceladas.")
+    
+    def action_cancel(self):
+        for record in self:
+            if record.state == 'sold':
+                raise UserError("Una propiedad vendida no puede ser cancelada.")
+            record.state = 'cancelled'
+        return True
+
+    def action_sold(self):
+        for record in self:
+            if record.state == 'cancelled':
+                raise UserError("Una propiedad cancelada no puede ser vendida.")
+            record.state = 'sold'
+        return True
+
+        # unidad 2 - punto 20
+    def action_generate_offer(self):
+        for record in self:
+            partners = self.env['res.partner'].search([
+                ('active', '=', True),
+                ('id', 'not in', record.offer_partner_ids.ids),
+            ])
+            if not partners:
+                raise UserError("No hay contactos disponibles para generar una oferta.")
+            factor = random.uniform(0.7, 1.3)
+            self.env['estate.property.offer'].create({
+                'property_id': record.id,
+                'partner_id': random.choice(partners).id,
+                'price': record.expected_price * factor,
+            })
+        return True
+
+        # unidad 2 - punto 21
+    def action_clear_tags(self):
+        for record in self:
+            record.tag_ids = [Command.clear()]
+        return True
+
+    def action_load_all_tags(self):
+        all_tags = self.env['estate.property.tag'].search([])
+        for record in self:
+            record.tag_ids = [Command.set(all_tags.ids)]
+        return True
+
+    def action_new_building_tag(self):
+        tag = self.env['estate.property.tag'].search([('name', '=', 'A estrenar')], limit=1)
+        if not tag:
+            tag = self.env['estate.property.tag'].create({'name': 'A estrenar'})
+        for record in self:
+            record.tag_ids = [Command.link(tag.id)]
+        return True

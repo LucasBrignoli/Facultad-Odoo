@@ -11,6 +11,7 @@
                 <field name="validity"/>
                 <field name="date_deadline"/>
                 <field name="status"/>
+                <button name="action_accept" type="object" icon="fa-check" title="Aceptar"/>
             </list>
         </field>
     </record>
@@ -30,6 +31,7 @@
                 <field name="validity"/>
                 <field name="date_deadline"/>
                 <field name="status"/>
+                <button name="action_accept" type="object" icon="fa-check" title="Aceptar"/>
             </list>
         </field>
     </record>
